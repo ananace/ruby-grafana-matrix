@@ -1,12 +1,17 @@
 <%= data['title'] %>
+<%- unless data.fetch('message', '').empty? -%>
 <%= data['message'] %>
-<%- if data['error'] -%>
+<%- end -%>
+<%- if data.key? 'error' -%>
 Error: <%= data['error'] %>
 <%- end -%>
 
 <%- if data['state'] != 'ok' -%>
-<%-   data['evalMatches'].each do |match| -%>
+<%-   unless data['evalMatches'].empty? -%>
+<%-     data['evalMatches'].each do |match| -%>
 <%= match['metric'] %>: <%= match['value'] %>
+<%-     end -%>
+
 <%-   end -%>
 <%-   if data['imageUrl'] && rule.image? -%>
 Image: <%= data['imageUrl'] %>

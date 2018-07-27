@@ -1,6 +1,8 @@
 <h4><a href="<%= data['ruleUrl'] %>" style="font-weight: bold; font-style: italic"><font color="<%= SEVERITY_COLOURS[data['state'].to_sym] %>"><%= data['title'] %></font></a></h4>
+<%- unless data.fetch('message', '').empty? -%>
 <p><%= data['message'] %></p>
-<%- if data['error'] -%>
+<%- end -%>
+<%- if data.key? 'error' -%>
 <h5>Error:</h5>
 <p><%= data['error'] %></p>
 <%- end -%>
