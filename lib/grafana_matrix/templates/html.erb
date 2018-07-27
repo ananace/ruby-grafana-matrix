@@ -7,7 +7,7 @@ SeverityColours = {
   :no_data => '#f79520',
 }.freeze
 -%>
-<h4><a href="<%= data['ruleUrl'] %>" style="font-weight: bold; font-style: italic; color: <%= SeverityColours[data['state'].to_sym] %>"><%= data['title'] %></a></h4>
+<h4><a href="<%= data['ruleUrl'] %>" style="font-weight: bold; font-style: italic"><font color="<%= SeverityColours[data['state'].to_sym] %>"><%= data['title'] %></font></a></h4>
 <p><%= data['message'] %></p>
 <%- if data['error'] -%>
 <h5>Error:</h5>
