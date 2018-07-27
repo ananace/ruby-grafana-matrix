@@ -1,0 +1,59 @@
+---
+AllCops:
+  TargetRubyVersion: 2.4
+  Exclude:
+    - '*.spec'
+    - 'Rakefile'
+    - 'vendor/**/*'
+
+# Don't enforce documentation
+Style/Documentation:
+  Enabled: false
+
+Style/FrozenStringLiteralComment:
+  Enabled: false
+
+Style/MultilineBlockChain:
+  Enabled: false
+
+Layout/IndentHeredoc:
+  Enabled: false
+
+Metrics/PerceivedComplexity:
+  Enabled: false
+
+Metrics/CyclomaticComplexity:
+  Enabled: false
+
+Style/RescueModifier:
+  Enabled: false
+
+Metrics/MethodLength:
+  Max: 40
+
+Metrics/LineLength:
+  Max: 190
+
+Metrics/AbcSize:
+  Enabled: false
+
+Performance/FixedSize:
+  Exclude:
+    - 'test/**/*'
+
+Metrics/BlockLength:
+  Exclude:
+    - 'test/**/*'
+
+Metrics/ClassLength:
+  Max: 200
+  Exclude:
+    - 'test/**/*'
+
+Lint/AmbiguousBlockAssociation:
+  Enabled: false
+
+Style/ClassAndModuleChildren:
+  Exclude:
+    - 'test/**/*'
+    - 'app/controllers/concerns/foreman/**/*'

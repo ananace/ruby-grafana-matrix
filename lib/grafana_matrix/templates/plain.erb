@@ -1,0 +1,15 @@
+<%= data['title'] %>
+<%= data['message'] %>
+<%- if data['error'] -%>
+Error: <%= data['error'] %>
+<%- end -%>
+
+<%- if data['state'] != 'ok' -%>
+<%-   data['evalMatches'].each do |match| -%>
+<%= match['metric'] %>: <%= match['value'] %>
+<%-   end -%>
+<%-   if data['imageUrl'] && rule.image? -%>
+Image: <%= data['imageUrl'] %>
+<%-   end -%>
+<%- end -%>
+URL: <%= data['ruleUrl'] %>

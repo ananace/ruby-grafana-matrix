@@ -1,0 +1,14 @@
+---
+# Set up HS connections
+matrix:
+- name: matrix-org
+  url: https://matrix.org
+  access_token: <token>
+  device_id: <device>
+
+# Set up notification ingress rules
+rules:
+- name: hq             # Name of the rule
+  room: #hq:matrix.org # Room or ID
+  matrix: matrix-org   # The Matrix HS to use - defaults to first one
+  image: true          # Upload image?
