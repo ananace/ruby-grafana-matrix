@@ -11,4 +11,10 @@ rules:
 - name: hq             # Name of the rule
   room: #hq:matrix.org # Room or ID
   matrix: matrix-org   # The Matrix HS to use - defaults to first one
-  image: true          # Upload image?
+  image: true          # Attach image to the notification?
+  embed_image: true    # Upload and embed the image into the message?
+
+# To use the webhook, you need to configure it into Grafana as:
+#
+# Url: http://example.com/hook?rule=<rule name>
+# Http Method: POST

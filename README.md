@@ -2,6 +2,15 @@
 
 A Grafana webhook ingress for sending Matrix notifications
 
+Working:
+- Simple notifications
+
+TODO:
+- Proper configuration
+- Authenticated requests
+- Embedded image handling
+- Proper styling
+
 ## Installation
 
 TODO
@@ -12,7 +21,7 @@ TODO
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/ananace/grafana_matrix
+Bug reports and pull requests are welcome on GitHub at https://github.com/ananace/ruby-grafana-matrix
 
 ## License
 

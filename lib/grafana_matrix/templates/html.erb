@@ -1,13 +1,4 @@
-<%-
-SeverityColours = {
-  :ok => '#10a345',
-  :paused => '#8e8e8e',
-  :alerting => '#ed2e18',
-  :pending => '#8e8e8e',
-  :no_data => '#f79520',
-}.freeze
--%>
-<h4><a href="<%= data['ruleUrl'] %>" style="font-weight: bold; font-style: italic"><font color="<%= SeverityColours[data['state'].to_sym] %>"><%= data['title'] %></font></a></h4>
+<h4><a href="<%= data['ruleUrl'] %>" style="font-weight: bold; font-style: italic"><font color="<%= SEVERITY_COLOURS[data['state'].to_sym] %>"><%= data['title'] %></font></a></h4>
 <p><%= data['message'] %></p>
 <%- if data['error'] -%>
 <h5>Error:</h5>
@@ -24,7 +15,7 @@ SeverityColours = {
 <%-     if rule.embed_image? -%>
 <a href="<%= data['ruleUrl'] %>"><img src="<%= data['imageUrl'] %>" alt="<%= data['ruleName'] %>" /></a>
 <%-     else -%>
-<a href="<%= data['imageUrl'] %>">Image</a>
+<a href="<%= data['imageUrl'] %>">Alert image</a>
 <%-     end -%>
 <%-   end -%>
 <%- end -%>
