@@ -25,6 +25,7 @@ module GrafanaMatrix
       end
 
       def client
+        # TODO: Proper handling of this
         return Object.new if matrix.nil?
         @client ||= config.client(matrix)
       end

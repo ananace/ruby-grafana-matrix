@@ -7,6 +7,7 @@ require 'sinatra'
 
 config = GrafanaMatrix::Config.new 'config.yml'
 renderer = GrafanaMatrix::Renderer.new
+image_handler = GrafanaMatrix::ImageHandler.new
 
 set :bind, config.bind if config.bind?
 set :port, config.port if config.port?
@@ -30,6 +31,9 @@ post '/hook' do
   room = rule.room if rule.room.start_with? '!'
   room ||= client.join_room(rule.room)
   halt 500, 'Unable to acquire Matrix room from rule and client' unless room
+
+  # Upload the image to the Matrix HS if requested to be embedded
+  data['imageUrl'] = image_handler.upload(data['imageUrl']) if rule.embed_image? && rule.image? && data['imageUrl']
 
   plain = renderer.render_plain(data, rule)
   html = renderer.render_html(data, rule)
