@@ -25,6 +25,7 @@ module GrafanaMatrix
       end
 
       def client
+        return Object.new if matrix.nil?
         @client ||= config.client(matrix)
       end
     end
@@ -46,27 +47,47 @@ module GrafanaMatrix
       true
     end
 
+    def bind?
+      @config.key? 'bind'
+    end
+
+    def bind
+      @config.fetch('bind', '::')
+    end
+
+    def port?
+      @config.key? 'port'
+    end
+
+    def port
+      @config.fetch('port', 4567)
+    end
+
     def client(client_name = nil)
       client_name ||= @config['matrix'].first['name']
       raise 'No client name provided' unless client_name
 
-      client_data = @config['matrix'].find { |m| m['name'] == client_name }.dup
+      client_data = @config['matrix'].find { |m| m['name'] == client_name }
       raise 'No client configuration found for name given' unless client_data
 
-      # Symbolize keys
-      client_data.keys.each do |key|
-        client_data[(key.to_sym rescue key)] = client_data.delete key
-      end
-
       @clients[client_name] ||= begin
+        client_data = client_data.dup
+
+        # Symbolize keys
+        client_data.keys.each do |key|
+          client_data[(key.to_sym rescue key)] = client_data.delete key
+        end
+
         MatrixSdk::Api.new(client_data[:url],
                            client_data.reject { |k, _v| %i[url].include? k })
       end
     end
 
     def rule(rule_name)
-      rule_data = @config['rules'].find { |m| m['name'] == rule_name }.dup
+      rule_data = @config['rules'].find { |m| m['name'] == rule_name }
       raise 'No rule configuration found for name given' if rule_data.nil?
+
+      rule_data = rule_data.dup
 
       # Symbolize keys
       rule_data.keys.each do |key|

@@ -8,21 +8,21 @@ require 'sinatra'
 config = GrafanaMatrix::Config.new 'config.yml'
 renderer = GrafanaMatrix::Renderer.new
 
-puts 'Loaded configuration;'
-puts config.inspect
+set :bind, config.bind if config.bind?
+set :port, config.port if config.port?
 
 post '/hook' do
   rule = params[:rule]
   halt 400, 'Missing rule name' unless rule
 
-  rule = config.rule(rule)
+  rule = config.rule(rule) rescue nil
   halt 404, 'No such rule configured' unless rule
 
   data = JSON.parse(request.body.read)
   halt 400, 'No notification body provided' unless data
 
-  puts 'Data:'
-  puts data
+  logger.debug 'Data:'
+  logger.debug data
 
   client = rule.client
   halt 500, 'Unable to acquire Matrix client from rule' unless client
@@ -34,11 +34,14 @@ post '/hook' do
   plain = renderer.render_plain(data, rule)
   html = renderer.render_html(data, rule)
 
-  puts 'Plain:'
-  puts plain
+  logger.debug 'Plain:'
+  logger.debug plain
 
-  puts 'HTML:'
-  puts html
+  logger.debug 'HTML:'
+  logger.debug html
+
+  # Support rules with nil client explicitly specified, for testing
+  return unless client.is_a? MatrixSdk::Api
 
   client.send_message_event(room, 'm.room.message',
                             msgtype: 'm.notice',
