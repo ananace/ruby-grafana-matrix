@@ -33,7 +33,13 @@ post '/hook' do
   halt 500, 'Unable to acquire Matrix room from rule and client' unless room
 
   # Upload the image to the Matrix HS if requested to be embedded
-  data['imageUrl'] = image_handler.upload(data['imageUrl']) if rule.embed_image? && rule.image? && data['imageUrl']
+  begin
+    data['imageUrl'] = image_handler.upload(data['imageUrl']) if rule.embed_image? && rule.image? && data['imageUrl']
+  rescue StandardError => ex
+    logger.fatal 'Failed to upload image', ex
+    # Disable embedding for this call
+    rule.data[:embed_image] = false
+  end
 
   plain = renderer.render_plain(data, rule)
   html = renderer.render_html(data, rule)
