@@ -34,9 +34,9 @@ post '/hook' do
 
   # Upload the image to the Matrix HS if requested to be embedded
   begin
-    data['imageUrl'] = image_handler.upload(data['imageUrl']) if rule.embed_image? && rule.image? && data['imageUrl']
+    data['imageUrl'] = image_handler.upload(client, data['imageUrl']) if rule.embed_image? && rule.image? && data['imageUrl']
   rescue StandardError => ex
-    logger.fatal 'Failed to upload image', ex
+    logger.fatal "Failed to upload image\n#{ex.class} (#{ex.message})\n#{ex.backtrace.join "\n"}"
     # Disable embedding for this call
     rule.data[:embed_image] = false
   end

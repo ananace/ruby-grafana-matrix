@@ -6,7 +6,7 @@ module GrafanaMatrix
       # TODO
       file = Net::HTTP.get(URI(image))
       uploaded = client.media_upload(file, 'image/png')
-      get_download_url(uploaded[:content_uri])
+      uploaded[:content_uri]
     end
   end
 end

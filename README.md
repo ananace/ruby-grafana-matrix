@@ -6,9 +6,7 @@ Working:
 - Simple notifications
 
 TODO:
-- Proper configuration
 - Authenticated requests
-- Embedded image handling
 - Proper styling
 
 ## Installation
