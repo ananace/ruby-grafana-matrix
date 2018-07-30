@@ -41,8 +41,8 @@ post '/hook' do
     rule.data[:embed_image] = false
   end
 
-  plain = renderer.render_plain(data, rule)
-  html = renderer.render_html(data, rule)
+  plain = renderer.render_plain(data, rule, rule.plain_template)
+  html = renderer.render_html(data, rule, rule.html_template)
 
   logger.debug 'Plain:'
   logger.debug plain

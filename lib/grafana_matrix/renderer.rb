@@ -1,7 +1,7 @@
 module GrafanaMatrix
   class Renderer
-    HTML_TEMPLATE = File.expand_path('templates/html.erb', __dir__).freeze
-    PLAIN_TEMPLATE = File.expand_path('templates/plain.erb', __dir__).freeze
+    HTML_TEMPLATE = '%TEMPLATES%/html.erb'.freeze
+    PLAIN_TEMPLATE = '%TEMPLATES%/plain.erb'.freeze
 
     SEVERITY_COLOURS = {
       ok: '#10a345',
@@ -17,11 +17,18 @@ module GrafanaMatrix
     end
 
     def render_html(data, rule, template = HTML_TEMPLATE)
-      render data, rule, File.read(template)
+      render data, rule, File.read(expand_path(template))
     end
 
     def render_plain(data, rule, template = PLAIN_TEMPLATE)
-      render data, rule, File.read(template)
+      render data, rule, File.read(expand_path(template))
+    end
+
+    private
+
+    def expand_path(path)
+      path.gsub('%TEMPLATES%', File.expand_path('templates', __dir__))
+          .gsub(/\$([a-zA-Z_][a-zA-Z0-9_]*)|\${\g<1>}/) { ENV[$1] }
     end
   end
 end

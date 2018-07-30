@@ -16,6 +16,18 @@ module GrafanaMatrix
         data.fetch(:matrix)
       end
 
+      def templates
+        data.fetch(:templates, nil)
+      end
+
+      def html_template
+        templates&.fetch('html', nil) || Renderer::HTML_TEMPLATE
+      end
+
+      def plain_template
+        templates&.fetch('plain', nil) || Renderer::PLAIN_TEMPLATE
+      end
+
       def image?
         data.fetch(:image, true)
       end

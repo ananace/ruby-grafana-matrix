@@ -18,6 +18,12 @@ rules:
   matrix: matrix-org   # The Matrix HS to use - defaults to first one
   image: true          # Attach image to the notification?
   embed_image: true    # Upload and embed the image into the message?
+  templates:
+    # Templates to use when rendering the notification, available placeholders:
+    #   %TEMPLATES% - lib/grafana_matrix/templates
+    #   $<env>      - Environment variables
+    html: "%TEMPLATES%/html.erb" # Path to HTML template
+    plain: "%TEMPLATES%/plain.erb" # Path to plaintext template
 
 # To use the webhook, you need to configure it into Grafana as:
 #
