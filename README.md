@@ -9,7 +9,7 @@ TODO:
 - Authenticated requests
 - Proper styling
 
-## Installation
+## Installation / Usage
 
 Until a more proper release is done;  
 Download the git repo, instantiate the bundle, create a proper configuration file, and launch the server
@@ -24,10 +24,6 @@ vi config.yml
 
 bundle exec bin/server
 ```
-
-## Usage
-
-TODO
 
 ## Contributing
 
