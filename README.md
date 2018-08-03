@@ -25,6 +25,9 @@ vi config.yml
 bundle exec bin/server
 ```
 
+You would then add the ingester as a Grafana webhook channel like so;
+![Grafana config](https://i.imgur.com/Cu4m8Ew.png)
+
 ## Contributing
 
 Bug reports and pull requests are welcome on GitHub at https://github.com/ananace/ruby-grafana-matrix
