@@ -11,6 +11,7 @@ image_handler = GrafanaMatrix::ImageHandler.new
 
 # Automatic reload
 Signal.trap('HUP') do
+  STDERR.puts "[#{Time.now}] SIGHUP received, reloading configuration"
   config.load!
 end
 
