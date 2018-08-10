@@ -9,6 +9,11 @@ config = GrafanaMatrix::Config.new 'config.yml'
 renderer = GrafanaMatrix::Renderer.new
 image_handler = GrafanaMatrix::ImageHandler.new
 
+# Automatic reload
+Signal.trap('HUP') do
+  config.load!
+end
+
 set :bind, config.bind if config.bind?
 set :port, config.port if config.port?
 
