@@ -20,6 +20,18 @@ module GrafanaMatrix
         data.fetch(:templates, nil)
       end
 
+      def auth
+        data.fetch(:auth, nil)
+      end
+
+      def auth_user
+        auth?.fetch(:user)
+      end
+
+      def auth_pass
+        auth?.fetch(:pass)
+      end
+
       def html_template
         templates&.fetch('html', nil) || Renderer::HTML_TEMPLATE
       end
@@ -96,18 +108,23 @@ module GrafanaMatrix
       end
     end
 
-    def rule(rule_name)
-      rule_data = @config['rules'].find { |m| m['name'] == rule_name }
-      raise 'No rule configuration found for name given' if rule_data.nil?
+    def rules(rule_name)
+      @config['rules']
+        .select { |m| m['name'] == rule_name }
+        .map do |rule_data|
+        rule_data = rule_data.dup
 
-      rule_data = rule_data.dup
+        # Symbolize keys
+        rule_data.keys.each do |key|
+          rule_data[(key.to_sym rescue key)] = rule_data.delete key
+        end
 
-      # Symbolize keys
-      rule_data.keys.each do |key|
-        rule_data[(key.to_sym rescue key)] = rule_data.delete key
+        Rule.new self, rule_data
       end
+    end
 
-      Rule.new self, rule_data
+    def rule(rule_name)
+      rules(rule_name).first
     end
   end
 end

@@ -18,12 +18,25 @@ end
 set :bind, config.bind if config.bind?
 set :port, config.port if config.port?
 
-post '/hook' do
-  rule = params[:rule]
-  halt 400, 'Missing rule name' unless rule
+use Rack::Auth::Basic, 'Grafana ingress' do |username, password|
+  request.set_header('x-auth-user', username)
+  request.set_header('x-auth-pass', password)
+  true
+end
 
-  rule = config.rule(rule) rescue nil
-  halt 404, 'No such rule configured' unless rule
+
+post '/hook' do
+  rule_name = params[:rule]
+  halt 400, 'Missing rule name' unless rule_name
+
+  rules = (config.rules(rule_name) rescue [])
+          .select do |rule|
+    next true unless rule.auth
+
+    next false unless request.has_header?('x-auth-user') && request.has_header?('x-auth-pass')
+    rule.auth_user == request.get_header('x-auth-user') && rule.auth_pass == request.get_header('x-auth-pass')
+  end
+  halt 404, 'No such rule configured' if rules.empty?
 
   data = JSON.parse(request.body.read)
   halt 400, 'No notification body provided' unless data
@@ -31,39 +44,41 @@ post '/hook' do
   logger.debug 'Data:'
   logger.debug data
 
-  client = rule.client
-  halt 500, 'Unable to acquire Matrix client from rule' unless client
+  rules.each do |rule|
+    client = rule.client
+    halt 500, 'Unable to acquire Matrix client from rule' unless client
 
-  room = rule.room if rule.room.start_with? '!'
-  room ||= client.join_room(rule.room)
-  halt 500, 'Unable to acquire Matrix room from rule and client' unless room
+    room = rule.room if rule.room.start_with? '!'
+    room ||= client.join_room(rule.room)
+    halt 500, 'Unable to acquire Matrix room from rule and client' unless room
 
-  # Upload the image to the Matrix HS if requested to be embedded
-  begin
-    data['imageUrl'] = image_handler.upload(client, data['imageUrl']) if rule.embed_image? && rule.image? && data['imageUrl']
-  rescue StandardError => ex
-    logger.fatal "Failed to upload image\n#{ex.class} (#{ex.message})\n#{ex.backtrace.join "\n"}"
-    # Disable embedding for this call
-    rule.data[:embed_image] = false
+    # Upload the image to the Matrix HS if requested to be embedded
+    begin
+      data['imageUrl'] = image_handler.upload(client, data['imageUrl']) if rule.embed_image? && rule.image? && data['imageUrl']
+    rescue StandardError => ex
+      logger.fatal "Failed to upload image\n#{ex.class} (#{ex.message})\n#{ex.backtrace.join "\n"}"
+      # Disable embedding for this call
+      rule.data[:embed_image] = false
+    end
+
+    plain = renderer.render_plain(data, rule, rule.plain_template)
+    html = renderer.render_html(data, rule, rule.html_template)
+
+    logger.debug 'Plain:'
+    logger.debug plain
+
+    logger.debug 'HTML:'
+    logger.debug html
+
+    # Support rules with nil client explicitly specified, for testing
+    next unless client.is_a? MatrixSdk::Api
+
+    client.send_message_event(room, 'm.room.message',
+                              msgtype: 'm.notice',
+                              body: plain,
+                              formatted_body: html,
+                              format: 'org.matrix.custom.html')
   end
-
-  plain = renderer.render_plain(data, rule, rule.plain_template)
-  html = renderer.render_html(data, rule, rule.html_template)
-
-  logger.debug 'Plain:'
-  logger.debug plain
-
-  logger.debug 'HTML:'
-  logger.debug html
-
-  # Support rules with nil client explicitly specified, for testing
-  return unless client.is_a? MatrixSdk::Api
-
-  client.send_message_event(room, 'm.room.message',
-                            msgtype: 'm.notice',
-                            body: plain,
-                            formatted_body: html,
-                            format: 'org.matrix.custom.html')
 
   ''
 end

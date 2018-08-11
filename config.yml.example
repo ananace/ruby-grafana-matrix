@@ -29,6 +29,9 @@ rules:
     #   $<env>      - Environment variables
     #html: "%TEMPLATES%/html.erb" # Path to HTML template
     #plain: "%TEMPLATES%/plain.erb" # Path to plaintext template
+  #auth:
+    #user: example
+    #pass: any HTTP encodable string
 #- name: other-hq
 #  room: "#hq:private.matrix.org
 #  matrix: matrix-priv
