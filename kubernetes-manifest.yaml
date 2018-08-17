@@ -1,0 +1,104 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: grafana-matrix-ingress
+  name: grafana-matrix-ingress
+spec:
+  ports:
+  - port: 4567
+    protocol: TCP
+    targetPort: 4567
+  selector:
+    app: grafana-matrix-ingress
+  type: ClusterIP
+---
+apiVersion: v1
+data:
+  config.yml: |
+    ---
+    # Webhook server configuration
+    # Or use the launch options `-o '::' -p 4567`
+    #bind: '::'
+    #port: 4567
+
+    # Set up your HS connections
+    matrix:
+    - name: matrix-org
+      url: https://matrix.org
+      access_token: <token>
+      #device_id: <device> # Optional
+    #- name: matrix-priv
+    #  url: https://private.matrix.org
+    #  access_token: <token>
+
+
+    # Set up notification ingress rules
+    rules:
+    - name: hq               # Name of the rule
+      room: "#hq:matrix.org" # Room or ID
+      matrix: matrix-org     # The Matrix HS to use - defaults to first one
+      # The following values are optional:
+      #image: true           # Attach image to the notification?
+      #embed_image: true     # Upload and embed the image into the message?
+      #templates:
+        # Templates to use when rendering the notification, available placeholders:
+        #   %TEMPLATES% - lib/grafana_matrix/templates
+        #   $<env>      - Environment variables
+        #html: "%TEMPLATES%/html.erb" # Path to HTML template
+        #plain: "%TEMPLATES%/plain.erb" # Path to plaintext template
+      #auth:
+        #user: example
+        #pass: any HTTP encodable string
+    #- name: other-hq
+    #  room: "#hq:private.matrix.org
+    #  matrix: matrix-priv
+
+    # To use the webhook, you need to configure it into Grafana as:
+    #
+    # Url: http://<server address>:<port>/hook?rule=<rule name>
+    # Http Method: POST
+kind: ConfigMap
+metadata:
+  labels:
+    app: grafana-matrix-ingress
+  name: grafana-matrix-ingress
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    app: grafana-matrix-ingress
+  name: grafana-matrix-ingress
+spec:
+  selector:
+    matchLabels:
+      app: grafana-matrix-ingress
+  template:
+    metadata:
+      labels:
+        app: grafana-matrix-ingress
+    spec:
+      containers:
+      - image: ananace/grafana-matrix:latest
+        name: grafana-matrix-ingress
+        ports:
+        - containerPort: 4567
+          protocol: TCP
+        resources:
+          limits:
+            cpu: 250m
+            memory: 256Mi
+          requests:
+            cpu: 10m
+            memory: 25Mi
+        volumeMounts:
+        - mountPath: /app/config.yml
+          name: config
+          subPath: config.yml
+      restartPolicy: Always
+      volumes:
+      - configMap:
+          name: grafana-matrix-ingress
+        name: config
