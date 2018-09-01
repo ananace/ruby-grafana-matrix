@@ -24,7 +24,7 @@ matrix:
 # Set up notification ingress rules
 rules:
 - name: hq               # Name of the rule
-  room: "#hq:matrix.org" # Room ID
+  room: "#hq:matrix.org" # Room or ID
   matrix: matrix-org     # The Matrix HS to use - defaults to first one
   # The following values are optional:
   #image: true           # Attach image to the notification?
