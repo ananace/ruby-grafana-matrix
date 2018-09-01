@@ -18,11 +18,16 @@ end
 set :bind, config.bind if config.bind?
 set :port, config.port if config.port?
 
-# use Rack::Auth::Basic, 'Grafana ingress' do |username, password|
-#   request.set_header('x-auth-user', username)
-#   request.set_header('x-auth-pass', password)
-#   true
-# end
+helpers do
+  def authorized(user, pass)
+    @auth ||=  Rack::Auth::Basic::Request.new(request.env)
+    @auth.provided? and @auth.basic? and @auth.credentials and @auth.credentials == [user, pass]
+  end
+end
+
+get '/' do
+    # Respond with empty string instead of Sinatra's default page
+end
 
 post '/hook' do
   rule_name = params[:rule]
@@ -32,8 +37,8 @@ post '/hook' do
           .select do |rule|
     next true unless rule.auth
 
-    next false unless request.has_header?('x-auth-user') && request.has_header?('x-auth-pass')
-    rule.auth_user == request.get_header('x-auth-user') && rule.auth_pass == request.get_header('x-auth-pass')
+    # Parse HTTP basic auth
+    authorized(rule.auth['user'], rule.auth['pass'])
   end
   halt 404, 'No such rule configured' if rules.empty?
 
