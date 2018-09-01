@@ -25,6 +25,10 @@ helpers do
   end
 end
 
+get '/' do
+    # Respond with empty string instead of Sinatra's default page
+end
+
 post '/hook' do
   rule_name = params[:rule]
   halt 400, 'Missing rule name' unless rule_name
