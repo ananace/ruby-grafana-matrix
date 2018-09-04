@@ -4,9 +4,9 @@ A Grafana webhook ingress for sending Matrix notifications
 
 Working:
 - Simple notifications
+- Authenticated requests
 
 TODO:
-- Authenticated requests
 - Proper styling
 
 ## Installation / Usage
