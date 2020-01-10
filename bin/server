@@ -78,7 +78,7 @@ post '/hook' do
     next unless client.is_a? MatrixSdk::Api
 
     client.send_message_event(room, 'm.room.message',
-                              msgtype: 'm.text',
+                              msgtype: rule.msgtype,
                               body: plain,
                               formatted_body: html,
                               format: 'org.matrix.custom.html')

@@ -48,6 +48,10 @@ module GrafanaMatrix
         data.fetch(:embed_image, true)
       end
 
+      def msgtype
+        data.fetch(:msgtype, config.default_msgtype)
+      end
+
       def client
         # TODO: Proper handling of this
         return Object.new if matrix.nil?
@@ -70,6 +74,10 @@ module GrafanaMatrix
       raise 'No such file' unless File.exist? filename
       @config = Psych.load(File.read(filename))
       true
+    end
+
+    def default_msgtype
+      @config.fetch('msgtype', 'm.text')
     end
 
     def bind?

@@ -20,12 +20,16 @@ matrix:
 #  url: https://private.matrix.org
 #  access_token: <token>
 
+# The default message type for messages, should be either m.text or m.notice,
+# defaults to m.text
+msgtype: m.text
 
 # Set up notification ingress rules
 rules:
 - name: hq               # Name of the rule
   room: "#hq:matrix.org" # Room or ID
   matrix: matrix-org     # The Matrix HS to use - defaults to first one
+  msgtype: m.notice
   # The following values are optional:
   #image: true           # Attach image to the notification?
   #embed_image: true     # Upload and embed the image into the message?
