@@ -28,7 +28,10 @@ module GrafanaMatrix
 
     def expand_path(path)
       path.gsub('%TEMPLATES%', File.expand_path('templates', __dir__))
-          .gsub(/\$([a-zA-Z_][a-zA-Z0-9_]*)|\${\g<1>}/) { ENV[$1] }
+          .gsub(/\$([a-zA-Z_][a-zA-Z0-9_]*)|\${\g<1>}/) do
+        match = Regexp.last_match
+        ENV[match[1]]
+      end
     end
   end
 end

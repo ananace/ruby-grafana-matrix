@@ -3,6 +3,7 @@ require 'psych'
 
 module GrafanaMatrix
   class Config
+    # rubocop:disable Metrics/BlockLength
     Rule = Struct.new(:config, :data) do
       def name
         data.fetch(:name)
@@ -55,9 +56,11 @@ module GrafanaMatrix
       def client
         # TODO: Proper handling of this
         return Object.new if matrix.nil?
+
         @client ||= config.client(matrix)
       end
     end
+    # rubocop:enable Metrics/BlockLength
 
     def initialize(config = {})
       if config.is_a? String
@@ -72,6 +75,7 @@ module GrafanaMatrix
 
     def load!(filename = 'config.yml')
       raise 'No such file' unless File.exist? filename
+
       @config = Psych.load(File.read(filename))
       true
     end
