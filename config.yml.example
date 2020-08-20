@@ -1,24 +1,19 @@
 ---
-# Webhook server configuration
-# Or use the launch options `-o '::' -p 4567`
-#bind: '::'
-#port: 4567
-
 # Set up your HS connections
 matrix:
 - name: matrix-org
-  url: https://matrix.org
+  url: 'https://matrix.org'
   # Create a user - log that user in using a post request
   # curl -XPOST -d '{"type": "m.login.password",
   #                  "user":"grafana",
   #                  "password":"2m4ny53cr3t5"}'
   #      "https://my-matrix-server/_matrix/client/r0/login"
   # Fill that access token in here
-  access_token: <token>
+  access_token: '<token>'
   #device_id: <device> # Optional
 #- name: matrix-priv
-#  url: https://private.matrix.org
-#  access_token: <token>
+#  url: 'https://private.matrix.org'
+#  access_token: '<token>'
 
 # The default message type for messages, should be either m.text or m.notice,
 # defaults to m.text

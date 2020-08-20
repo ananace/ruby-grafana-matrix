@@ -9,9 +9,10 @@ WORKDIR $APP_HOME
 
 ADD Gemfile* $APP_HOME/
 ADD *gemspec $APP_HOME/
-ADD bin $APP_HOME/bin/
+ADD config.yml.example config.ru $APP_HOME/
 ADD lib $APP_HOME/lib/
 
 RUN bundle install --without development
 
-CMD ["bundle", "exec", "bin/server"]
+EXPOSE 9292/tcp
+CMD ["bundle", "exec", "rackup"]
