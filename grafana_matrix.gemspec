@@ -12,11 +12,8 @@ Gem::Specification.new do |spec|
   spec.homepage      = 'https://github.com/ananace/ruby-grafana-matrix'
   spec.license       = 'MIT'
 
-  spec.files         = Dir['**/*.rb'].reject do |f|
-    f.match(%r{^(test|spec|features|vendor)/})
-  end
-  spec.bindir        = 'bin'
-  spec.executables   = spec.files.grep(%r{^bin/}) { |f| File.basename(f) }
+  spec.extra_rdoc_files = %w[LICENSE.txt README.md]
+  spec.files         = Dir['lib/**/*'] + spec.extra_rdoc_files
   spec.require_paths = ['lib']
 
   spec.add_dependency 'matrix_sdk', '~> 2.0'
