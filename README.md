@@ -22,7 +22,7 @@ cp config.yml.example config.yml
 vi config.yml
 # Edit the configuration to suit your requirements
 
-bundle exec bin/server
+bundle exec rackup
 ```
 
 You would then add the ingester as a Grafana webhook channel like so;
