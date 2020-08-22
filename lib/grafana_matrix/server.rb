@@ -14,11 +14,6 @@ module GrafanaMatrix
       @image_handler = GrafanaMatrix::ImageHandler.new
     end
 
-    configure :development do
-      require 'sinatra/reloader'
-      register Sinatra::Reloader
-    end
-
     helpers do
       def authorized(user, pass)
         @auth ||= Rack::Auth::Basic::Request.new(request.env)
