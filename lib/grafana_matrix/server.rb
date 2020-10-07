@@ -38,8 +38,11 @@ module GrafanaMatrix
       end
       halt 404, 'No such rule configured' if rules.empty?
 
-      data = JSON.parse(request.body.read)
-      halt 400, 'No notification body provided' unless data
+      data = request.body.read
+      halt 400, 'No notification body provided' if data.empty? 
+
+      data = JSON.parse(data) rescue nil
+      halt 400, 'Unable to parse notification body' unless data
 
       logger.debug 'Data:'
       logger.debug data
