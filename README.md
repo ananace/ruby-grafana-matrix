@@ -30,15 +30,21 @@ You would then add the ingester as a Grafana webhook channel like so;
 
 ## Docker
 
-Create a proper configuration file from the provided `config.yml.example`, then build the image:
+Build the image:
 
 `docker build -t ruby-grafana-matrix:latest .`
 
-Run the resulting container, and mount `config.yml` inside of it:
+Create a proper configuration file:
+
+```sh
+cp config.yml.example config.yml
+vi config.yml
+```
+Run the resulting container, and mount your `config.yml` inside of it:
 
 `docker run -v $PWD/config.yml:/app/config.yml --name ruby-grafana-matrix ruby-grafana-matrix:latest`
 
-If running the container on the same host as Grafana, you can attach them to the same Docker network and use the container name in the Grafana webhook URL.
+If running the container on the same host as Grafana, you can attach it to the same Docker network and use the container name in the Grafana webhook URL.
 
 ## Contributing
 
