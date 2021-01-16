@@ -1,4 +1,4 @@
-FROM ruby:2.6-alpine
+FROM ruby:alpine
 
 #RUN apt-get update -qq && apt-get install -y build-essential
 
@@ -9,7 +9,7 @@ WORKDIR $APP_HOME
 
 ADD Gemfile* $APP_HOME/
 ADD *gemspec $APP_HOME/
-ADD config.yml config.ru $APP_HOME/
+ADD config.yml.example config.ru $APP_HOME/
 ADD lib $APP_HOME/lib/
 
 RUN bundle install --without development
