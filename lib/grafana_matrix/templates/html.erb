@@ -1,6 +1,13 @@
 <h4><a href="<%= data['ruleUrl'] %>" style="font-weight: bold; font-style: italic"><font color="<%= SEVERITY_COLOURS[data['state'].to_sym] %>"><%= data['title'] %></font></a></h4>
-<%- unless data.fetch('message', '').empty? -%>
+<%- if data['imageUrl'] && rule.details? && data['state'] != 'ok' -%>
+<details><summary>
+<%-   unless data.fetch('message', '').empty? -%>
+<%= data['message'] %>
+<%-   end -%>
+<%- else -%>
+<%-   unless data.fetch('message', '').empty? -%>
 <p><%= data['message'] %></p>
+<%-   end -%>
 <%- end -%>
 <%- if data.key? 'error' -%>
 <h5>Error:</h5>
@@ -12,12 +19,20 @@
 <b><%= match['metric'] %></b>: <%= match['value'] %><br/>
 <%-     end -%>
 <%-   end -%>
+<%-   if data['imageUrl'] && rule.details? -%>
+</summary>
+<%-   end -%>
 <%-   if data['imageUrl'] && rule.image? -%>
+<%-     if !rule.details? -%>
 <br/>
+<%-     end -%>
 <%-     if rule.embed_image? -%>
 <a href="<%= data['ruleUrl'] %>"><img src="<%= data['imageUrl'] %>" alt="<%= data['ruleName'] %>" /></a>
 <%-     else -%>
 <a href="<%= data['imageUrl'] %>">Alert image</a>
 <%-     end -%>
 <%-   end -%>
+<%- end -%>
+<%- if data['imageUrl'] && rule.details? -%>
+</details>
 <%- end -%>

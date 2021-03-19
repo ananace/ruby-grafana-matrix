@@ -49,6 +49,10 @@ module GrafanaMatrix
         data.fetch(:embed_image, true)
       end
 
+      def details?
+        data.fetch(:details_tag, false)
+      end
+
       def msgtype
         data.fetch(:msgtype, config.default_msgtype)
       end
