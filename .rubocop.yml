@@ -6,6 +6,7 @@ AllCops:
     - 'Rakefile'
     - 'vendor/**/*'
   NewCops: enable
+  SuggestExtensions: false
 
 # Don't enforce documentation
 Style/Documentation:
