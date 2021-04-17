@@ -16,7 +16,7 @@ Gem::Specification.new do |spec|
   spec.files         = Dir['lib/**/*'] + spec.extra_rdoc_files
   spec.require_paths = ['lib']
 
-  spec.required_ruby_version = '>= 2.5', '< 4'
+  spec.required_ruby_version = '>= 2.6', '< 4'
 
   spec.add_dependency 'matrix_sdk', '~> 2.0'
   spec.add_dependency 'sinatra'
