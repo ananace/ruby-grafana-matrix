@@ -12,7 +12,7 @@ module GrafanaMatrix
     }.freeze
 
     def render(data, rule, template)
-      erb = ERB.new template, 0, '-'
+      erb = ERB.new template, trim_mode: '-'
       erb.result(binding)
     end
 

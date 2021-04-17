@@ -1,0 +1,8 @@
+[Alerting] IO wait alert
+IO wait percentage averaged above 10% the last five minutes
+
+node.example.com: 14.45
+node2.example.com: 11.22
+
+Image: https://grafana.example.com/image.png
+URL: https://grafana.example.com/panel-url

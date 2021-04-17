@@ -39,7 +39,7 @@ module GrafanaMatrix
       halt 404, 'No such rule configured' if rules.empty?
 
       data = request.body.read
-      halt 400, 'No notification body provided' if data.empty? 
+      halt 400, 'No notification body provided' if data.empty?
 
       data = JSON.parse(data) rescue nil
       halt 400, 'Unable to parse notification body' unless data
@@ -83,7 +83,7 @@ module GrafanaMatrix
                                     format: 'org.matrix.custom.html' })
       end
 
-      ''
+      { result: :success }.to_json
     end
   end
 end

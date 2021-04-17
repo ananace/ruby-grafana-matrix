@@ -1,10 +1,12 @@
 ---
 AllCops:
-  TargetRubyVersion: 2.4
+  TargetRubyVersion: 2.5
   Exclude:
     - '*.spec'
     - 'Rakefile'
     - 'vendor/**/*'
+  NewCops: enable
+  SuggestExtensions: false
 
 # Don't enforce documentation
 Style/Documentation:
@@ -14,9 +16,6 @@ Style/FrozenStringLiteralComment:
   Enabled: false
 
 Style/MultilineBlockChain:
-  Enabled: false
-
-Layout/IndentHeredoc:
   Enabled: false
 
 Metrics/PerceivedComplexity:
@@ -31,17 +30,11 @@ Style/RescueModifier:
 Metrics/MethodLength:
   Max: 40
 
-Metrics/LineLength:
-  Max: 190
-
 Metrics/AbcSize:
   Enabled: false
 
-Performance/FixedSize:
-  Exclude:
-    - 'test/**/*'
-
 Metrics/BlockLength:
+  Max: 40
   Exclude:
     - 'test/**/*'
 
@@ -50,8 +43,8 @@ Metrics/ClassLength:
   Exclude:
     - 'test/**/*'
 
-Lint/AmbiguousBlockAssociation:
-  Enabled: false
+Layout/LineLength:
+  Max: 190
 
 Style/ClassAndModuleChildren:
   Exclude:

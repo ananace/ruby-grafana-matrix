@@ -2,7 +2,7 @@
 <%- if data['imageUrl'] && rule.details? && data['state'] != 'ok' -%>
 <details><summary>
 <%-   unless data.fetch('message', '').empty? -%>
-<%= data['message'] %>
+<%= data['message'] %><br/>
 <%-   end -%>
 <%- else -%>
 <%-   unless data.fetch('message', '').empty? -%>
