@@ -9,7 +9,7 @@ Signal.trap('HUP') do
 end
 
 map '/health' do
-  run lambda { |_| [200, {'Content-Type' => 'text/plain'}, ['OK']] }
+  run -> { [200, { 'Content-Type' => 'text/plain' }, ['OK']] }
 end
 
 run GrafanaMatrix::Server.new(config)

@@ -7,7 +7,7 @@ class RendererTest < Minitest::Test
     'state' => 'alerting',
     'evalMatches' => [
       { 'metric' => 'node.example.com', 'value' => 14.45 },
-      { 'metric' => 'node2.example.com', 'value' => 11.22 },
+      { 'metric' => 'node2.example.com', 'value' => 11.22 }
     ],
     'imageUrl' => 'https://grafana.example.com/image.png',
     'ruleUrl' => 'https://grafana.example.com/panel-url'
