@@ -3,7 +3,6 @@ require 'psych'
 
 module GrafanaMatrix
   class Config
-    # rubocop:disable Metrics/BlockLength
     Rule = Struct.new(:config, :data) do
       def name
         data.fetch(:name)
@@ -64,7 +63,6 @@ module GrafanaMatrix
         @client ||= config.client(matrix)
       end
     end
-    # rubocop:enable Metrics/BlockLength
 
     def initialize(config = {})
       if config.is_a? String
@@ -115,7 +113,7 @@ module GrafanaMatrix
         client_data = client_data.dup
 
         # Symbolize keys
-        client_data.keys.each do |key|
+        client_data.each_key do |key|
           client_data[(key.to_sym rescue key)] = client_data.delete key
         end
 
@@ -131,7 +129,7 @@ module GrafanaMatrix
         rule_data = rule_data.dup
 
         # Symbolize keys
-        rule_data.keys.each do |key|
+        rule_data.each_key do |key|
           rule_data[(key.to_sym rescue key)] = rule_data.delete key
         end
 

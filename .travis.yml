@@ -1,0 +1,17 @@
+---
+sudo: false
+language: ruby
+rvm:
+  - 2.5
+  - 2.6
+  - 2.7
+  - 3.0
+
+cache:
+  bundler: true
+before_install:
+  - gem install bundler rubocop
+  - gem update --system
+script:
+  - rubocop lib/
+  - bundle exec rake test

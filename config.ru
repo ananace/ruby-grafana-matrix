@@ -1,7 +1,7 @@
 require 'grafana_matrix'
 
 config = GrafanaMatrix::Config.new 'config.yml'
-warn 'Specifying port/bind in config '
+warn 'Specifying port/bind in config' if config.port? || config.bind?
 
 Signal.trap('HUP') do
   warn "[#{Time.now}] SIGHUP received, reloading configuration"
