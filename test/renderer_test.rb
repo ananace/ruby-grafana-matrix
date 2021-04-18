@@ -30,4 +30,11 @@ class RendererTest < Minitest::Test
   def test_that_it_renders_html_with_details
     assert_equal load_fixture('message-details.html').read, @renderer.render_html(ALERTDATA, ALERTRULE_DETAILS)
   end
+
+  def test_path_expansion
+    ENV['GRAFANA_MATRIX_TESTENV'] = 'TestValue'
+    assert_equal 'TestValue', @renderer.send(:expand_path, '$GRAFANA_MATRIX_TESTENV')
+    assert_equal 'TestValue/blah', @renderer.send(:expand_path, '${GRAFANA_MATRIX_TESTENV}/blah')
+    assert_equal File.join(File.expand_path('../lib/grafana_matrix/templates/', __dir__), 'TestValue/blah'), @renderer.send(:expand_path, '%TEMPLATES%/${GRAFANA_MATRIX_TESTENV}/blah')
+  end
 end
