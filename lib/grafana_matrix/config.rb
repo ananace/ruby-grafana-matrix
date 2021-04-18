@@ -118,7 +118,7 @@ module GrafanaMatrix
         end
 
         MatrixSdk::Api.new(client_data[:url],
-                           client_data.reject { |k, _v| %i[url].include? k })
+                           **client_data.reject { |k, _v| %i[url].include? k })
       end
     end
 

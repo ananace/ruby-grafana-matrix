@@ -77,10 +77,10 @@ module GrafanaMatrix
         next unless client.is_a? MatrixSdk::Api
 
         client.send_message_event(room, 'm.room.message',
-                                  msgtype: rule.msgtype,
-                                  body: plain,
-                                  formatted_body: html,
-                                  format: 'org.matrix.custom.html')
+                                  { msgtype: rule.msgtype,
+                                    body: plain,
+                                    formatted_body: html,
+                                    format: 'org.matrix.custom.html' })
       end
 
       { result: :success }.to_json
