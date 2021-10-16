@@ -4,17 +4,15 @@ require 'sinatra/base'
 
 module GrafanaMatrix
   class Server < ::Sinatra::Base
-    attr_reader :config, :renderer, :image_handler
-
-    def initialize(config)
-      super
-
-      @config = config
-      @renderer = GrafanaMatrix::Renderer.new
-      @image_handler = GrafanaMatrix::ImageHandler.new
+    configure :development, :production do
+      enable :logging
     end
 
     helpers do
+      def config; @config ||= GrafanaMatrix::Config.global; end
+      def renderer; @renderer ||= GrafanaMatrix::Renderer.new; end
+      def image_handler; @image_handler ||= GrafanaMatrix::ImageHandler.new; end
+
       def authorized(user, pass)
         @auth ||= Rack::Auth::Basic::Request.new(request.env)
         @auth.provided? && @auth.basic? && @auth.credentials && @auth.credentials == [user, pass]

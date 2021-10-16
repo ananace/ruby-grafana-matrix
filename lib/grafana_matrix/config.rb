@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'matrix_sdk'
 require 'psych'
 
@@ -64,6 +66,10 @@ module GrafanaMatrix
       end
     end
 
+    def self.global
+      @global ||= self.new
+    end
+
     def initialize(config = {})
       if config.is_a? String
         file = config
@@ -110,12 +116,7 @@ module GrafanaMatrix
       raise 'No client configuration found for name given' unless client_data
 
       @clients[client_name] ||= begin
-        client_data = client_data.dup
-
-        # Symbolize keys
-        client_data.each_key do |key|
-          client_data[(key.to_sym rescue key)] = client_data.delete key
-        end
+        client_data = client_data.dup.transform_keys { |key| key.to_sym rescue key }
 
         MatrixSdk::Api.new(client_data[:url],
                            **client_data.reject { |k, _v| %i[url].include? k })
@@ -126,12 +127,7 @@ module GrafanaMatrix
       @config['rules']
         .select { |m| m['name'] == rule_name }
         .map do |rule_data|
-        rule_data = rule_data.dup
-
-        # Symbolize keys
-        rule_data.each_key do |key|
-          rule_data[(key.to_sym rescue key)] = rule_data.delete key
-        end
+        rule_data = rule_data.dup.transform_keys { |key| key.to_sym rescue key }
 
         Rule.new self, rule_data
       end

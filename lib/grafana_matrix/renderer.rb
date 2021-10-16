@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module GrafanaMatrix
   class Renderer
     HTML_TEMPLATE = '%TEMPLATES%/html.erb'.freeze

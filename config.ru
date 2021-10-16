@@ -1,6 +1,7 @@
 require 'grafana_matrix'
 
-config = GrafanaMatrix::Config.new 'config.yml'
+config = GrafanaMatrix::Config.global
+config.load! 'config.yml'
 warn 'Specifying port/bind in config' if config.port? || config.bind?
 
 Signal.trap('HUP') do
@@ -12,4 +13,6 @@ map '/health' do
   run -> { [200, { 'Content-Type' => 'text/plain' }, ['OK']] }
 end
 
-run GrafanaMatrix::Server.new(config)
+map '/' do
+  run GrafanaMatrix::Server.new
+end
