@@ -26,6 +26,7 @@ bundle exec rackup
 ```
 
 You would then add the ingester as a Grafana webhook channel like so - albeit with port 9292 unless changed;
+
 ![Grafana config](https://i.imgur.com/Cu4m8Ew.png)
 
 ## Docker
