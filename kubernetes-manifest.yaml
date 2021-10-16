@@ -7,9 +7,9 @@ metadata:
   name: grafana-matrix-ingress
 spec:
   ports:
-  - port: 4567
+  - port: 9292
     protocol: TCP
-    targetPort: 4567
+    targetPort: 9292
   selector:
     app: grafana-matrix-ingress
   type: ClusterIP
@@ -84,7 +84,7 @@ spec:
       - image: ananace/grafana-matrix:latest
         name: grafana-matrix-ingress
         ports:
-        - containerPort: 4567
+        - containerPort: 9292
           protocol: TCP
         resources:
           limits:
